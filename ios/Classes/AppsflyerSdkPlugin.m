@@ -450,8 +450,17 @@ static BOOL _isSKADEnabled = false;
 }
 
 - (void)stop:(FlutterMethodCall*)call result:(FlutterResult)result{
-    BOOL stop = call.arguments[@"isStopped"];
-    [AppsFlyerLib shared].isStopped = stop;
+    BOOL isStopped = YES;
+    id isStoppedValue = nil;
+
+    isStoppedValue = call.arguments[@"isStopped"];
+    if ([isStoppedValue isKindOfClass:[NSNumber class]]) {
+        // isStopped is a boolean that will come through as an NSNumber
+        isStopped = [(NSNumber*)isStoppedValue boolValue];
+    }
+
+    [AppsFlyerLib shared].isStopped = isStopped;
+
     result(nil);
 }
 
